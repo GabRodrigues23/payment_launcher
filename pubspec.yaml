@@ -10,6 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  go_router: ^17.2.0
+  get_it: ^9.2.1
 
 dev_dependencies:
   flutter_test:
@@ -18,3 +20,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/montserrat/Montserrat-VariableFont_wght.ttf
+        - asset: assets/fonts/montserrat/static/Montserrat-Bold.ttf
+        - asset: assets/fonts/montserrat/static/Montserrat-Regular.ttf
+        - asset: assets/fonts/montserrat/Montserrat-Italic-VariableFont_wght.ttf
