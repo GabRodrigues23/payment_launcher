@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:payment_launcher/core/constants/app_colors.dart';
+import 'package:payment_launcher/core/constants/routes.dart';
 import 'package:payment_launcher/core/services/theme_service.dart';
 
 class HomePage extends StatelessWidget {
@@ -75,7 +77,7 @@ class HomePage extends StatelessWidget {
                     Text(
                       ('Conectar Servidor'),
                       style: TextStyle(
-                        color: AppColors.appPrimaryColor,
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                         letterSpacing: 0.5,
@@ -83,7 +85,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ],
                 ),
-                onPressed: () {},
+                onPressed: () => context.go(Routes.settings),
               ),
             ],
           ),

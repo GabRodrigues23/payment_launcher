@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:payment_launcher/core/constants/app_colors.dart';
 import 'package:payment_launcher/core/routes/app_router.dart';
 import 'package:payment_launcher/core/services/theme_service.dart';
+import 'package:payment_launcher/features/settings/service/settings_service.dart';
 
 class BuildApp extends StatelessWidget {
   const BuildApp({super.key});
@@ -10,6 +11,7 @@ class BuildApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeService = GetIt.I<ThemeService>();
+    final settingsService = GetIt.I<SettingsService>();
 
     return ValueListenableBuilder<ThemeMode>(
       valueListenable: themeService.themeMode,
@@ -20,7 +22,7 @@ class BuildApp extends StatelessWidget {
           theme: ThemeData(
             fontFamily: 'Montserrat',
             useMaterial3: true,
-            brightness: Brightness.dark,
+            brightness: Brightness.light,
             colorSchemeSeed: AppColors.appPrimaryColor,
             scaffoldBackgroundColor: Colors.white,
           ),
@@ -32,7 +34,7 @@ class BuildApp extends StatelessWidget {
             scaffoldBackgroundColor: Colors.black,
           ),
           themeMode: mode,
-          routerConfig: AppRouter(themeService).router,
+          routerConfig: AppRouter(themeService, settingsService).router,
         );
       },
     );
