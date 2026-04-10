@@ -14,11 +14,16 @@ dependencies:
   get_it: ^9.2.1
   lottie: ^3.3.2
   shared_preferences: ^2.5.5
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.11.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  freezed: ^3.2.5
+  build_runner: ^2.13.1
+  json_serializable: ^6.13.1
 
 flutter:
   uses-material-design: true
