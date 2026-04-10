@@ -1,7 +1,7 @@
 enum PaymentTypes {
-  Credit('CC', 'Credit'),
-  Debit('CD', 'Debit'),
-  Pix('PX', 'Pix');
+  credit('CC', 'Credit'),
+  debit('CD', 'Debit'),
+  pix('PX', 'Pix');
 
   final String code;
   final String type;
