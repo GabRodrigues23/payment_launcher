@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:payment_launcher/core/constants/app_colors.dart';
 import 'package:payment_launcher/core/services/theme_service.dart';
 
@@ -12,7 +13,11 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Payment Launcher',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            letterSpacing: 0.5,
+          ),
         ),
         centerTitle: true,
         actions: [
@@ -21,6 +26,7 @@ class HomePage extends StatelessWidget {
               themeService.themeMode.value == ThemeMode.light
                   ? Icons.dark_mode
                   : Icons.light_mode,
+              size: 20,
             ),
             onPressed: () => themeService.toggleTheme(),
           ),
@@ -28,43 +34,59 @@ class HomePage extends StatelessWidget {
       ),
 
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 40,
-          children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.appPrimaryColor,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                  horizontal: 32,
-                ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 40,
+            children: [
+              Lottie.asset(
+                'assets/animations/home_animation.json',
+                height: 180,
+                repeat: true,
               ),
-              child: const Text(
-                'Comecar agora',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-              onPressed: () {},
-            ),
-            TextButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                spacing: 4,
-                children: [
-                  Icon(Icons.dns, color: AppColors.appPrimaryColor),
-                  Text(
-                    ('Conectar Servidor'),
-                    style: TextStyle(
-                      color: AppColors.appPrimaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.appPrimaryColor,
+                  minimumSize: const Size(250, 70),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(12),
                   ),
-                ],
+                  elevation: 4,
+                ),
+                child: const Text(
+                  'Comecar agora',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                onPressed: () {},
               ),
-              onPressed: () {},
-            ),
-          ],
+              TextButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 4,
+                  children: [
+                    Icon(Icons.dns, color: AppColors.appPrimaryColor, size: 20),
+                    Text(
+                      ('Conectar Servidor'),
+                      style: TextStyle(
+                        color: AppColors.appPrimaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ],
+                ),
+                onPressed: () {},
+              ),
+            ],
+          ),
         ),
       ),
     );
