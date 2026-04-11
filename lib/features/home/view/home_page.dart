@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:payment_launcher/core/constants/app_colors.dart';
 import 'package:payment_launcher/core/constants/routes.dart';
 import 'package:payment_launcher/core/services/theme_service.dart';
+import 'package:payment_launcher/shared/widgets/nav_bar.dart';
 
 class HomePage extends StatelessWidget {
   final ThemeService themeService;
@@ -12,28 +13,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Payment Launcher',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            letterSpacing: 0.5,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(
-              themeService.themeMode.value == ThemeMode.light
-                  ? Icons.dark_mode
-                  : Icons.light_mode,
-              size: 20,
-            ),
-            onPressed: () => themeService.toggleTheme(),
-          ),
-        ],
-      ),
+      appBar: const NavBar(hasBack: false),
 
       body: Center(
         child: Padding(
@@ -65,7 +45,7 @@ class HomePage extends StatelessWidget {
                     letterSpacing: 0.5,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () => context.go(Routes.payment),
               ),
               TextButton(
                 child: Row(
