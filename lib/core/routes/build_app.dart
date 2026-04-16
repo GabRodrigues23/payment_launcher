@@ -13,7 +13,7 @@ class BuildApp extends StatelessWidget {
     final themeService = GetIt.I<ThemeService>();
     final settingsService = GetIt.I<SettingsService>();
 
-    late final router = AppRouter(themeService, settingsService);
+    late final AppRouter router = AppRouter(themeService, settingsService);
 
     return ValueListenableBuilder<ThemeMode>(
       valueListenable: themeService.themeMode,
