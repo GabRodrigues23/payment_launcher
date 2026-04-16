@@ -1,10 +1,12 @@
 enum PaymentTypes {
-  credit('CC', 'Credit'),
-  debit('CD', 'Debit'),
-  pix('PX', 'Pix');
+  credit(03, 'CC', 'Credit'),
+  debit(04, 'CD', 'Debit'),
+  pix(17, 'PX', 'Pix'),
+  unknown(99, 'UN', 'Desconhecido');
 
-  final String code;
+  final int code;
   final String type;
+  final String description;
 
-  const PaymentTypes(this.code, this.type);
+  const PaymentTypes(this.code, this.type, this.description);
 }

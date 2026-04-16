@@ -8,20 +8,25 @@ part of 'payment_model.dart';
 
 _PaymentModel _$PaymentModelFromJson(Map<String, dynamic> json) =>
     _PaymentModel(
-      referenceId: DateTime.parse(json['referenceId'] as String),
       type: $enumDecode(_$PaymentTypesEnumMap, json['type']),
+      referenceId: DateTime.parse(json['referenceId'] as String),
       amount: (json['amount'] as num).toDouble(),
+      installments: (json['installments'] as num?)?.toInt(),
+      installmentType: json['installmentType'] as String?,
     );
 
 Map<String, dynamic> _$PaymentModelToJson(_PaymentModel instance) =>
     <String, dynamic>{
-      'referenceId': instance.referenceId.toIso8601String(),
       'type': _$PaymentTypesEnumMap[instance.type]!,
+      'referenceId': instance.referenceId.toIso8601String(),
       'amount': instance.amount,
+      'installments': instance.installments,
+      'installmentType': instance.installmentType,
     };
 
 const _$PaymentTypesEnumMap = {
   PaymentTypes.credit: 'credit',
   PaymentTypes.debit: 'debit',
   PaymentTypes.pix: 'pix',
+  PaymentTypes.unknown: 'unknown',
 };

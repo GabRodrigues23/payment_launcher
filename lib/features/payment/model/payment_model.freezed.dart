@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PaymentModel {
 
- DateTime get referenceId; PaymentTypes get type; double get amount;
+ PaymentTypes get type; DateTime get referenceId; double get amount; int? get installments; String? get installmentType;
 /// Create a copy of PaymentModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PaymentModelCopyWith<PaymentModel> get copyWith => _$PaymentModelCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentModel&&(identical(other.referenceId, referenceId) || other.referenceId == referenceId)&&(identical(other.type, type) || other.type == type)&&(identical(other.amount, amount) || other.amount == amount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentModel&&(identical(other.type, type) || other.type == type)&&(identical(other.referenceId, referenceId) || other.referenceId == referenceId)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.installments, installments) || other.installments == installments)&&(identical(other.installmentType, installmentType) || other.installmentType == installmentType));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,referenceId,type,amount);
+int get hashCode => Object.hash(runtimeType,type,referenceId,amount,installments,installmentType);
 
 @override
 String toString() {
-  return 'PaymentModel(referenceId: $referenceId, type: $type, amount: $amount)';
+  return 'PaymentModel(type: $type, referenceId: $referenceId, amount: $amount, installments: $installments, installmentType: $installmentType)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PaymentModelCopyWith<$Res>  {
   factory $PaymentModelCopyWith(PaymentModel value, $Res Function(PaymentModel) _then) = _$PaymentModelCopyWithImpl;
 @useResult
 $Res call({
- DateTime referenceId, PaymentTypes type, double amount
+ PaymentTypes type, DateTime referenceId, double amount, int? installments, String? installmentType
 });
 
 
@@ -65,12 +65,14 @@ class _$PaymentModelCopyWithImpl<$Res>
 
 /// Create a copy of PaymentModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? referenceId = null,Object? type = null,Object? amount = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? type = null,Object? referenceId = null,Object? amount = null,Object? installments = freezed,Object? installmentType = freezed,}) {
   return _then(_self.copyWith(
-referenceId: null == referenceId ? _self.referenceId : referenceId // ignore: cast_nullable_to_non_nullable
-as DateTime,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as PaymentTypes,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as double,
+type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as PaymentTypes,referenceId: null == referenceId ? _self.referenceId : referenceId // ignore: cast_nullable_to_non_nullable
+as DateTime,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
+as double,installments: freezed == installments ? _self.installments : installments // ignore: cast_nullable_to_non_nullable
+as int?,installmentType: freezed == installmentType ? _self.installmentType : installmentType // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -155,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DateTime referenceId,  PaymentTypes type,  double amount)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( PaymentTypes type,  DateTime referenceId,  double amount,  int? installments,  String? installmentType)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PaymentModel() when $default != null:
-return $default(_that.referenceId,_that.type,_that.amount);case _:
+return $default(_that.type,_that.referenceId,_that.amount,_that.installments,_that.installmentType);case _:
   return orElse();
 
 }
@@ -176,10 +178,10 @@ return $default(_that.referenceId,_that.type,_that.amount);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DateTime referenceId,  PaymentTypes type,  double amount)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( PaymentTypes type,  DateTime referenceId,  double amount,  int? installments,  String? installmentType)  $default,) {final _that = this;
 switch (_that) {
 case _PaymentModel():
-return $default(_that.referenceId,_that.type,_that.amount);case _:
+return $default(_that.type,_that.referenceId,_that.amount,_that.installments,_that.installmentType);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +198,10 @@ return $default(_that.referenceId,_that.type,_that.amount);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DateTime referenceId,  PaymentTypes type,  double amount)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( PaymentTypes type,  DateTime referenceId,  double amount,  int? installments,  String? installmentType)?  $default,) {final _that = this;
 switch (_that) {
 case _PaymentModel() when $default != null:
-return $default(_that.referenceId,_that.type,_that.amount);case _:
+return $default(_that.type,_that.referenceId,_that.amount,_that.installments,_that.installmentType);case _:
   return null;
 
 }
@@ -211,12 +213,14 @@ return $default(_that.referenceId,_that.type,_that.amount);case _:
 @JsonSerializable()
 
 class _PaymentModel implements PaymentModel {
-  const _PaymentModel({required this.referenceId, required this.type, required this.amount});
+  const _PaymentModel({required this.type, required this.referenceId, required this.amount, this.installments, this.installmentType});
   factory _PaymentModel.fromJson(Map<String, dynamic> json) => _$PaymentModelFromJson(json);
 
-@override final  DateTime referenceId;
 @override final  PaymentTypes type;
+@override final  DateTime referenceId;
 @override final  double amount;
+@override final  int? installments;
+@override final  String? installmentType;
 
 /// Create a copy of PaymentModel
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +235,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PaymentModel&&(identical(other.referenceId, referenceId) || other.referenceId == referenceId)&&(identical(other.type, type) || other.type == type)&&(identical(other.amount, amount) || other.amount == amount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PaymentModel&&(identical(other.type, type) || other.type == type)&&(identical(other.referenceId, referenceId) || other.referenceId == referenceId)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.installments, installments) || other.installments == installments)&&(identical(other.installmentType, installmentType) || other.installmentType == installmentType));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,referenceId,type,amount);
+int get hashCode => Object.hash(runtimeType,type,referenceId,amount,installments,installmentType);
 
 @override
 String toString() {
-  return 'PaymentModel(referenceId: $referenceId, type: $type, amount: $amount)';
+  return 'PaymentModel(type: $type, referenceId: $referenceId, amount: $amount, installments: $installments, installmentType: $installmentType)';
 }
 
 
@@ -251,7 +255,7 @@ abstract mixin class _$PaymentModelCopyWith<$Res> implements $PaymentModelCopyWi
   factory _$PaymentModelCopyWith(_PaymentModel value, $Res Function(_PaymentModel) _then) = __$PaymentModelCopyWithImpl;
 @override @useResult
 $Res call({
- DateTime referenceId, PaymentTypes type, double amount
+ PaymentTypes type, DateTime referenceId, double amount, int? installments, String? installmentType
 });
 
 
@@ -268,12 +272,14 @@ class __$PaymentModelCopyWithImpl<$Res>
 
 /// Create a copy of PaymentModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? referenceId = null,Object? type = null,Object? amount = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? type = null,Object? referenceId = null,Object? amount = null,Object? installments = freezed,Object? installmentType = freezed,}) {
   return _then(_PaymentModel(
-referenceId: null == referenceId ? _self.referenceId : referenceId // ignore: cast_nullable_to_non_nullable
-as DateTime,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as PaymentTypes,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as double,
+type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as PaymentTypes,referenceId: null == referenceId ? _self.referenceId : referenceId // ignore: cast_nullable_to_non_nullable
+as DateTime,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
+as double,installments: freezed == installments ? _self.installments : installments // ignore: cast_nullable_to_non_nullable
+as int?,installmentType: freezed == installmentType ? _self.installmentType : installmentType // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

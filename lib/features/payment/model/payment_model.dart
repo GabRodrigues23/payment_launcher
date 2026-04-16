@@ -6,8 +6,14 @@ part 'payment_model.g.dart';
 
 @freezed
 abstract class PaymentModel with _$PaymentModel {
-  const factory PaymentModel({required DateTime referenceId, required PaymentTypes type, required double amount}) =
-      _PaymentModel;
+  const factory PaymentModel({
+    required PaymentTypes type,
+    required DateTime referenceId,
+    required double amount,
+    int? installments,
+    String? installmentType,
+  }) = _PaymentModel;
 
-  factory PaymentModel.fromJson(Map<String, dynamic> json) => _$PaymentModelFromJson(json);
+  factory PaymentModel.fromJson(Map<String, dynamic> json) =>
+      _$PaymentModelFromJson(json);
 }
