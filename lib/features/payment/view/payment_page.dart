@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:payment_launcher/core/services/theme_service.dart';
+import 'package:payment_launcher/features/payment/viewmodel/payment_view_model.dart';
 import 'package:payment_launcher/shared/enum/payment_types.dart';
 import 'package:payment_launcher/shared/widgets/nav_bar.dart';
 
 class PaymentPage extends StatefulWidget {
   final ThemeService themeService;
   final PaymentTypes paymentType;
+  final PaymentViewModel viewModel;
   const PaymentPage({
     super.key,
     required this.themeService,
     required this.paymentType,
+    required this.viewModel,
   });
 
   @override
@@ -19,6 +22,72 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   final TextEditingController _referenceIdController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
+  PaymentTypes? _selectedType;
+  int? _installments;
+  String? _installmentsType;
+
+  bool isLoading = false;
+
+  Future<void> _submit() async {
+    if (_selectedType == PaymentTypes.unknown) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Selecione o Tipo de Pagamento',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(16),
+          duration: Duration(seconds: 1),
+        ),
+      );
+      return;
+    }
+
+    setState(() => isLoading = true);
+
+    try {
+      await widget.viewModel.newTransaction(
+        _selectedType!,
+        _referenceIdController.text,
+        double.tryParse(_amountController.text) ?? 0,
+        _installments,
+        _installmentsType,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Transação Enviada com Sucesso',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.all(16),
+          duration: Duration(seconds: 1),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Erro ao enviar Transação: $e',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(16),
+          duration: Duration(seconds: 1),
+        ),
+      );
+
+      setState(() => isLoading = false);
+    }
+  }
 
   @override
   void initState() {
@@ -75,7 +144,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   child: Text(type.description),
                 );
               }).toList(),
-              onChanged: (value) => {},
+              onChanged: (value) => setState(() => _selectedType = value),
             ),
 
             TextField(
@@ -98,7 +167,6 @@ class _PaymentPageState extends State<PaymentPage> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF180E6D),
                   foregroundColor: Colors.white,
@@ -108,6 +176,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
+                onPressed: isLoading ? null : _submit,
                 child: Text(
                   'Enviar Simulação de Pagamento',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),

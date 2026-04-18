@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:payment_launcher/core/constants/app_colors.dart';
 import 'package:payment_launcher/core/routes/app_router.dart';
 import 'package:payment_launcher/core/services/theme_service.dart';
+import 'package:payment_launcher/features/payment/viewmodel/payment_view_model.dart';
 import 'package:payment_launcher/features/settings/service/settings_service.dart';
 
 class BuildApp extends StatelessWidget {
@@ -12,8 +13,13 @@ class BuildApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeService = GetIt.I<ThemeService>();
     final settingsService = GetIt.I<SettingsService>();
+    final viewModel = GetIt.I<PaymentViewModel>();
 
-    late final AppRouter router = AppRouter(themeService, settingsService);
+    late final AppRouter router = AppRouter(
+      themeService,
+      settingsService,
+      viewModel,
+    );
 
     return ValueListenableBuilder<ThemeMode>(
       valueListenable: themeService.themeMode,

@@ -8,10 +8,10 @@ part 'payment_model.g.dart';
 abstract class PaymentModel with _$PaymentModel {
   const factory PaymentModel({
     required PaymentTypes type,
-    required DateTime referenceId,
+    required String referenceId,
     required double amount,
-    int? installments,
-    String? installmentType,
+    @Default(1) int? installments,
+    @Default('single') String? installmentType,
   }) = _PaymentModel;
 
   factory PaymentModel.fromJson(Map<String, dynamic> json) =>
