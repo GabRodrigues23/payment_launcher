@@ -1,6 +1,6 @@
 enum PaymentType {
-  credit(03, 'CC', 'Credit'),
-  debit(04, 'CD', 'Debit'),
+  credit(03, 'CC', 'Crédito'),
+  debit(04, 'CD', 'Débito'),
   pix(17, 'PX', 'Pix'),
   unknown(99, 'UN', 'Desconhecido');
 

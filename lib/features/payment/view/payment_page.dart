@@ -100,13 +100,17 @@ class _PaymentPageState extends State<PaymentPage> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
+                prefixIcon: Icon(Icons.tag),
                 label: Text('Reference ID:'),
                 labelStyle: TextStyle(fontSize: 18),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Theme.of(context).colorScheme.surface,
               ),
               maxLines: 1,
-              style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 16,
+              ),
             ),
 
             DropdownButtonFormField<PaymentType>(
@@ -114,12 +118,16 @@ class _PaymentPageState extends State<PaymentPage> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
+                prefixIcon: Icon(Icons.credit_card),
                 label: Text('Tipo de Pagamento:'),
                 labelStyle: TextStyle(fontSize: 18),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Theme.of(context).colorScheme.surface,
               ),
-              style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 16,
+              ),
 
               items: PaymentType.values
                   .where((type) => type != PaymentType.unknown)
@@ -142,13 +150,17 @@ class _PaymentPageState extends State<PaymentPage> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
+                prefixIcon: Icon(Icons.attach_money),
                 label: Text('Valor:'),
                 labelStyle: TextStyle(fontSize: 18),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Theme.of(context).colorScheme.surface,
               ),
               maxLines: 1,
-              style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 16,
+              ),
             ),
 
             SizedBox(height: 40),
@@ -157,7 +169,7 @@ class _PaymentPageState extends State<PaymentPage> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF180E6D),
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Colors.white,
                   padding: EdgeInsets.symmetric(vertical: 14),
                   minimumSize: Size.fromHeight(60),
@@ -167,7 +179,10 @@ class _PaymentPageState extends State<PaymentPage> {
                 ),
                 onPressed: isLoading ? null : _submit,
                 child: isLoading
-                    ? CircularProgressIndicator()
+                    ? CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      )
                     : Text(
                         'Enviar Simulação de Pagamento',
                         style: TextStyle(
@@ -217,7 +232,10 @@ class _PaymentPageState extends State<PaymentPage> {
                   Text(
                     errorMessage,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ],
                 const SizedBox(height: 24),
