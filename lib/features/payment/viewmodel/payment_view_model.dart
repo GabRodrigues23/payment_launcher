@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:payment_launcher/features/payment/interface/payment_repository_interface.dart';
 import 'package:payment_launcher/features/payment/model/payment_model.dart';
-import 'package:payment_launcher/shared/enum/payment_types.dart';
+import 'package:payment_launcher/shared/enum/payment_type.dart';
 
 class PaymentViewModel {
   final PaymentRepositoryInterface repository;
@@ -8,18 +9,22 @@ class PaymentViewModel {
   PaymentViewModel(this.repository);
 
   Future<void> newTransaction(
-    PaymentTypes type,
+    PaymentType type,
     String referenceId,
     double amount,
     int? installments,
     String? installmentsType,
   ) async {
-    final model = PaymentModel(
-      type: type,
-      referenceId: referenceId,
-      amount: amount,
-    );
+    try {
+      final model = PaymentModel(
+        type: type,
+        referenceId: referenceId,
+        amount: amount,
+      );
 
-    await repository.postTransaction(model);
+      await repository.postTransaction(model);
+    } catch (e) {
+      debugPrint('Erro na viewmodel: $e');
+    }
   }
 }

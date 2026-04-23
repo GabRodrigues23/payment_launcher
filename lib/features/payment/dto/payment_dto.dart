@@ -1,8 +1,8 @@
 import 'package:payment_launcher/features/payment/model/payment_model.dart';
-import 'package:payment_launcher/shared/enum/payment_types.dart';
+import 'package:payment_launcher/shared/enum/payment_type.dart';
 
 class PaymentDto {
-  final PaymentTypes type;
+  final PaymentType type;
   final String referenceId;
   final double amount;
   final int? installments;

@@ -25,8 +25,8 @@ Map<String, dynamic> _$PaymentModelToJson(_PaymentModel instance) =>
     };
 
 const _$PaymentTypesEnumMap = {
-  PaymentTypes.credit: 'credit',
-  PaymentTypes.debit: 'debit',
-  PaymentTypes.pix: 'pix',
-  PaymentTypes.unknown: 'unknown',
+  PaymentType.credit: 'credit',
+  PaymentType.debit: 'debit',
+  PaymentType.pix: 'pix',
+  PaymentType.unknown: 'unknown',
 };

@@ -1,28 +1,31 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
+import 'package:dart_tefip/dart_tefip.dart';
 import 'package:payment_launcher/features/settings/service/settings_service.dart';
 
 class PaymentService {
-  final Dio dio;
   final SettingsService settings;
 
-  PaymentService(this.dio, this.settings);
+  PaymentService(this.settings);
 
-  Future<void> postTransaction(Map<String, dynamic> body) async {
-    final baseUrl = settings.serverUrl;
+  Future<TransactionResponseModel> postTransaction(
+    TransactionRequestModel request,
+  ) async {
+    TefIP.baseUrl = settings.baseUrl;
+    TefIP.username = settings.username;
+    TefIP.password = settings.password;
+
+    final tefIp = TefIP.instance;
 
     try {
-      final response = await dio.post(
-        '$baseUrl/transaction',
-        data: {jsonEncode(body)},
+      final response = await tefIp.transaction.post(
+        transactionRequest: request,
       );
-
-      if (response.statusCode != 200 && response.statusCode != 201) {
-        throw Exception('Erro ao criar Transação');
-      }
+      return response;
+    } on TefIPRequestException catch (e) {
+      throw Exception('Erro na transação: ${e.message} (Cod: ${e.statusCode})');
+    } on TefIPUnexpectedException catch (e) {
+      throw Exception('Erro interno no pinpad: ${e.exception}');
     } catch (e) {
-      throw Exception('Erro ao conectar no Servidor');
+      throw Exception('Erro ao conectar com terminal TEF. Erro: $e');
     }
   }
 }

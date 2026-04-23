@@ -15,19 +15,27 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   late TextEditingController _urlController;
+  late TextEditingController _usernameController;
+  late TextEditingController _passwordController;
   late final SettingsService _settings;
+
+  bool isObscure = true;
 
   @override
   void initState() {
     super.initState();
     _settings = widget.settingsService;
 
-    _urlController = TextEditingController(text: _settings.serverUrl);
+    _urlController = TextEditingController(text: _settings.baseUrl);
+    _usernameController = TextEditingController(text: _settings.username);
+    _passwordController = TextEditingController(text: _settings.password);
   }
 
   @override
   void dispose() {
     _urlController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -125,6 +133,68 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
               ),
+              Card(
+                color: Theme.of(context).colorScheme.surface,
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadiusGeometry.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    spacing: 16,
+                    children: [
+                      TextFormField(
+                        controller: _usernameController,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        decoration: InputDecoration(
+                          labelText: 'Usuário',
+                          hintText: 'admin',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.link,
+                            size: 20,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: isObscure,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        decoration: InputDecoration(
+                          labelText: 'Senha',
+                          hintText: '1234',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.link,
+                            size: 20,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              isObscure
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() => isObscure = !isObscure);
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -154,22 +224,3 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 }
-
-
-
-
-// AppBar(
-//         title: const Text(
-//           'Configurações',
-//           style: TextStyle(
-//             fontWeight: FontWeight.bold,
-//             fontSize: 20,
-//             letterSpacing: 0.5,
-//           ),
-//         ),
-//         centerTitle: true,
-//         leading: IconButton(
-//           icon: Icon(Icons.keyboard_return_outlined, size: 20),
-//           onPressed: () => context.go(Routes.home),
-//         ),
-//       ),

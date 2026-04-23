@@ -6,7 +6,7 @@ import 'package:payment_launcher/features/payment/view/payment_page.dart';
 import 'package:payment_launcher/features/payment/viewmodel/payment_view_model.dart';
 import 'package:payment_launcher/features/settings/service/settings_service.dart';
 import 'package:payment_launcher/features/settings/view/settings_page.dart';
-import 'package:payment_launcher/shared/enum/payment_types.dart';
+import 'package:payment_launcher/shared/enum/payment_type.dart';
 
 class AppRouter {
   final ThemeService themeService;
@@ -15,7 +15,7 @@ class AppRouter {
   AppRouter(this.themeService, this.settingsService, this.viewModel);
 
   late final GoRouter router = GoRouter(
-    initialLocation: Routes.payment,
+    initialLocation: Routes.home,
     routes: [
       GoRoute(
         path: Routes.home,
@@ -32,12 +32,12 @@ class AppRouter {
         path: Routes.payment,
         name: 'payment',
         builder: (context, state) {
-          final paymentType = state.extra as PaymentTypes?;
+          final paymentType = state.extra as PaymentType?;
 
           if (paymentType == null) {
             return PaymentPage(
               themeService: themeService,
-              paymentType: PaymentTypes.unknown,
+              paymentType: PaymentType.unknown,
               viewModel: viewModel,
             );
           }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:payment_launcher/core/services/theme_service.dart';
 import 'package:payment_launcher/features/payment/viewmodel/payment_view_model.dart';
-import 'package:payment_launcher/shared/enum/payment_types.dart';
+import 'package:payment_launcher/shared/enum/payment_type.dart';
 import 'package:payment_launcher/shared/widgets/nav_bar.dart';
 
 class PaymentPage extends StatefulWidget {
   final ThemeService themeService;
-  final PaymentTypes paymentType;
+  final PaymentType paymentType;
   final PaymentViewModel viewModel;
   const PaymentPage({
     super.key,
@@ -22,14 +22,14 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   final TextEditingController _referenceIdController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
-  PaymentTypes? _selectedType;
+  PaymentType? _selectedType;
   int? _installments;
   String? _installmentsType;
 
   bool isLoading = false;
 
   Future<void> _submit() async {
-    if (_selectedType == PaymentTypes.unknown) {
+    if (_selectedType == PaymentType.unknown) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -56,7 +56,7 @@ class _PaymentPageState extends State<PaymentPage> {
         _installments,
         _installmentsType,
       );
-
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -84,7 +84,7 @@ class _PaymentPageState extends State<PaymentPage> {
           duration: Duration(seconds: 1),
         ),
       );
-
+    } finally {
       setState(() => isLoading = false);
     }
   }
@@ -126,7 +126,7 @@ class _PaymentPageState extends State<PaymentPage> {
               style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
             ),
 
-            DropdownButtonFormField<PaymentTypes>(
+            DropdownButtonFormField<PaymentType>(
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -138,7 +138,7 @@ class _PaymentPageState extends State<PaymentPage> {
               ),
               style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
 
-              items: PaymentTypes.values.map((type) {
+              items: PaymentType.values.map((type) {
                 return DropdownMenuItem(
                   value: type,
                   child: Text(type.description),
@@ -149,6 +149,9 @@ class _PaymentPageState extends State<PaymentPage> {
 
             TextField(
               controller: _amountController,
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -177,10 +180,15 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                 ),
                 onPressed: isLoading ? null : _submit,
-                child: Text(
-                  'Enviar Simulação de Pagamento',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
+                child: isLoading
+                    ? CircularProgressIndicator()
+                    : Text(
+                        'Enviar Simulação de Pagamento',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
               ),
             ),
           ],

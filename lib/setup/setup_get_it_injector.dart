@@ -17,7 +17,7 @@ void setupGetItInjector() {
   getIt.registerLazySingleton<SettingsService>(() => SettingsService());
 
   getIt.registerLazySingleton<PaymentService>(
-    () => PaymentService(getIt<Dio>(), getIt<SettingsService>()),
+    () => PaymentService(getIt<SettingsService>()),
   );
   getIt.registerLazySingleton<PaymentRepositoryInterface>(
     () => PaymentRepository(getIt<PaymentService>()),

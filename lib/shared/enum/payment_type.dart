@@ -1,4 +1,4 @@
-enum PaymentTypes {
+enum PaymentType {
   credit(03, 'CC', 'Credit'),
   debit(04, 'CD', 'Debit'),
   pix(17, 'PX', 'Pix'),
@@ -8,5 +8,5 @@ enum PaymentTypes {
   final String type;
   final String description;
 
-  const PaymentTypes(this.code, this.type, this.description);
+  const PaymentType(this.code, this.type, this.description);
 }
