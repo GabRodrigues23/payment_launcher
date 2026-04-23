@@ -49,43 +49,28 @@ class _PaymentPageState extends State<PaymentPage> {
     setState(() => isLoading = true);
 
     try {
-      await widget.viewModel.newTransaction(
+      bool isApproved = await widget.viewModel.newTransaction(
         _selectedType!,
         _referenceIdController.text,
         double.tryParse(_amountController.text) ?? 0,
         _installments,
         _installmentsType,
       );
+
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Transação Enviada com Sucesso',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.green,
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.all(16),
-          duration: Duration(seconds: 1),
-        ),
-      );
+
+      if (isApproved) {
+        _showResultDialog(true);
+      } else {
+        _showResultDialog(false, errorMessage: 'Transação Negada');
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Erro ao enviar Transação: $e',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-          margin: const EdgeInsets.all(16),
-          duration: Duration(seconds: 1),
-        ),
-      );
+      if (!mounted) return;
+      _showResultDialog(false, errorMessage: e.toString());
     } finally {
-      setState(() => isLoading = false);
+      if (mounted) {
+        setState(() => isLoading = false);
+      }
     }
   }
 
@@ -194,6 +179,72 @@ class _PaymentPageState extends State<PaymentPage> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showResultDialog(bool isSuccess, {String? errorMessage}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadiusGeometry.circular(16),
+          ),
+          content: Padding(
+            padding: const EdgeInsetsGeometry.symmetric(vertical: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              spacing: 16,
+              children: [
+                Icon(
+                  isSuccess ? Icons.check_circle : Icons.cancel,
+                  color: isSuccess ? Colors.green : Colors.red,
+                  size: 80,
+                ),
+                Text(
+                  isSuccess ? 'Transação Aprovada' : 'Transação Negada',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: isSuccess ? Colors.green : Colors.red,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                if (!isSuccess && errorMessage != null) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    errorMessage,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                  ),
+                ],
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isSuccess ? Colors.green : Colors.red,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadiusGeometry.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    child: const Text(
+                      'OK',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

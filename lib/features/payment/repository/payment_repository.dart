@@ -10,7 +10,7 @@ class PaymentRepository implements PaymentRepositoryInterface {
   PaymentRepository(this.service);
 
   @override
-  Future<void> postTransaction(PaymentModel model) async {
+  Future<TransactionResponseModel> postTransaction(PaymentModel model) async {
     final request = TransactionRequestModel(
       referenceId: model.referenceId,
       type: model.type.toTefIpType,
@@ -18,11 +18,6 @@ class PaymentRepository implements PaymentRepositoryInterface {
     );
 
     final response = await service.postTransaction(request);
+    return response;
   }
 }
-
-  // @override
-  // Future<void> postTransaction(PaymentModel model) async {
-  //   final dto = PaymentDto.fromModel(model);
-  //   await service.postTransaction(dto.toJson());
-  // }
