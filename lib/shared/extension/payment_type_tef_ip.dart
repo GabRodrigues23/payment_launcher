@@ -11,7 +11,7 @@ extension PaymentTypeTefIp on PaymentType {
       case PaymentType.debit:
         return TefIPTransactionType.debit;
       case PaymentType.unknown:
-        throw Exception('Tipo de pagametno TEF inválido ou desconhecido');
+        throw Exception('Tipo de pagamento TEF inválido ou desconhecido');
     }
   }
 }

@@ -40,8 +40,6 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _saveSettings() async {
-    await _settings.setServerUrl(_urlController.text);
-
     if (mounted) {
       ScaffoldMessenger.of(context).clearSnackBars();
 
@@ -78,6 +76,18 @@ class _SettingsPageState extends State<SettingsPage> {
 
       context.go(Routes.home);
     }
+
+    if (_usernameController.text.isEmpty) {
+      _usernameController.text = 'admin';
+    }
+
+    if (_passwordController.text.isEmpty) {
+      _passwordController.text = '1234';
+    }
+
+    await _settings.setServerUrl(_urlController.text);
+    await _settings.setUsername(_usernameController.text);
+    await _settings.setPassword(_passwordController.text);
   }
 
   @override
@@ -156,7 +166,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           prefixIcon: Icon(
-                            Icons.link,
+                            Icons.person,
                             size: 20,
                             color: Theme.of(context).colorScheme.primary,
                           ),
@@ -175,7 +185,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           prefixIcon: Icon(
-                            Icons.link,
+                            Icons.lock,
                             size: 20,
                             color: Theme.of(context).colorScheme.primary,
                           ),

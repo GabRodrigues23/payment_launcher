@@ -26,4 +26,12 @@ class SettingsService {
         : value;
     await _prefs.setString(_keyBaseUrl, cleanUrl);
   }
+
+  Future<void> setUsername(String value) async {
+    await _prefs.setString(_keyUsername, value);
+  }
+
+  Future<void> setPassword(String value) async {
+    await _prefs.setString(_keyPassword, value);
+  }
 }

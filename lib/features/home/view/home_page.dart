@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
                   elevation: 4,
                 ),
                 child: const Text(
-                  'Comecar agora',
+                  'Começar agora',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,

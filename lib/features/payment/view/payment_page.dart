@@ -6,12 +6,10 @@ import 'package:payment_launcher/shared/widgets/nav_bar.dart';
 
 class PaymentPage extends StatefulWidget {
   final ThemeService themeService;
-  final PaymentType paymentType;
   final PaymentViewModel viewModel;
   const PaymentPage({
     super.key,
     required this.themeService,
-    required this.paymentType,
     required this.viewModel,
   });
 
@@ -123,12 +121,15 @@ class _PaymentPageState extends State<PaymentPage> {
               ),
               style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
 
-              items: PaymentType.values.map((type) {
-                return DropdownMenuItem(
-                  value: type,
-                  child: Text(type.description),
-                );
-              }).toList(),
+              items: PaymentType.values
+                  .where((type) => type != PaymentType.unknown)
+                  .map((type) {
+                    return DropdownMenuItem(
+                      value: type,
+                      child: Text(type.description),
+                    );
+                  })
+                  .toList(),
               onChanged: (value) => setState(() => _selectedType = value),
             ),
 

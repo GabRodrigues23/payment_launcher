@@ -6,7 +6,6 @@ import 'package:payment_launcher/features/payment/view/payment_page.dart';
 import 'package:payment_launcher/features/payment/viewmodel/payment_view_model.dart';
 import 'package:payment_launcher/features/settings/service/settings_service.dart';
 import 'package:payment_launcher/features/settings/view/settings_page.dart';
-import 'package:payment_launcher/shared/enum/payment_type.dart';
 
 class AppRouter {
   final ThemeService themeService;
@@ -31,23 +30,8 @@ class AppRouter {
       GoRoute(
         path: Routes.payment,
         name: 'payment',
-        builder: (context, state) {
-          final paymentType = state.extra as PaymentType?;
-
-          if (paymentType == null) {
-            return PaymentPage(
-              themeService: themeService,
-              paymentType: PaymentType.unknown,
-              viewModel: viewModel,
-            );
-          }
-
-          return PaymentPage(
-            themeService: themeService,
-            paymentType: paymentType,
-            viewModel: viewModel,
-          );
-        },
+        builder: (context, state) =>
+            PaymentPage(themeService: themeService, viewModel: viewModel),
       ),
     ],
   );
