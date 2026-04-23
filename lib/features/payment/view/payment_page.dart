@@ -26,21 +26,33 @@ class _PaymentPageState extends State<PaymentPage> {
 
   bool isLoading = false;
 
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(16),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   Future<void> _submit() async {
     if (_selectedType == PaymentType.unknown) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Selecione o Tipo de Pagamento',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-          margin: const EdgeInsets.all(16),
-          duration: Duration(seconds: 1),
-        ),
-      );
+      _showSnackBar('Selecione o Tipo de Pagamento');
+      return;
+    }
+
+    final rawAmount = _amountController.text.replaceAll(',', '.');
+    final double amount = double.tryParse(rawAmount) ?? 0;
+
+    if (amount <= 0) {
+      _showSnackBar('Informe um valor válido maior que zero');
       return;
     }
 
@@ -50,7 +62,7 @@ class _PaymentPageState extends State<PaymentPage> {
       bool isApproved = await widget.viewModel.newTransaction(
         _selectedType!,
         _referenceIdController.text,
-        double.tryParse(_amountController.text) ?? 0,
+        amount,
         _installments,
         _installmentsType,
       );
