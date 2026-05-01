@@ -43,6 +43,7 @@ class HomePage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                     letterSpacing: 0.5,
+                    color: Colors.white,
                   ),
                 ),
                 onPressed: () => context.go(Routes.payment),

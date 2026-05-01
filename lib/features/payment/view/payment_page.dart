@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:payment_launcher/core/constants/app_colors.dart';
 import 'package:payment_launcher/core/services/theme_service.dart';
 import 'package:payment_launcher/features/payment/viewmodel/payment_view_model.dart';
 import 'package:payment_launcher/shared/enum/payment_type.dart';
@@ -106,102 +107,130 @@ class _PaymentPageState extends State<PaymentPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           spacing: 20,
           children: [
-            TextField(
-              controller: _referenceIdController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                prefixIcon: Icon(Icons.tag),
-                label: Text('Reference ID:'),
-                labelStyle: TextStyle(fontSize: 18),
-                filled: true,
-                fillColor: Theme.of(context).colorScheme.surface,
+            Card(
+              color: Theme.of(context).colorScheme.surface,
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(12),
               ),
-              maxLines: 1,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontSize: 16,
-              ),
-            ),
-
-            DropdownButtonFormField<PaymentType>(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                prefixIcon: Icon(Icons.credit_card),
-                label: Text('Tipo de Pagamento:'),
-                labelStyle: TextStyle(fontSize: 18),
-                filled: true,
-                fillColor: Theme.of(context).colorScheme.surface,
-              ),
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontSize: 16,
-              ),
-
-              items: PaymentType.values
-                  .where((type) => type != PaymentType.unknown)
-                  .map((type) {
-                    return DropdownMenuItem(
-                      value: type,
-                      child: Text(type.description),
-                    );
-                  })
-                  .toList(),
-              onChanged: (value) => setState(() => _selectedType = value),
-            ),
-
-            TextField(
-              controller: _amountController,
-              keyboardType: const TextInputType.numberWithOptions(
-                decimal: true,
-              ),
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                prefixIcon: Icon(Icons.attach_money),
-                label: Text('Valor:'),
-                labelStyle: TextStyle(fontSize: 18),
-                filled: true,
-                fillColor: Theme.of(context).colorScheme.surface,
-              ),
-              maxLines: 1,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontSize: 16,
-              ),
-            ),
-
-            SizedBox(height: 40),
-
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(vertical: 14),
-                  minimumSize: Size.fromHeight(60),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: isLoading ? null : _submit,
-                child: isLoading
-                    ? CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
-                      )
-                    : Text(
-                        'Enviar Simulação de Pagamento',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  spacing: 24,
+                  children: [
+                    TextField(
+                      controller: _referenceIdController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
+                        prefixIcon: Icon(Icons.tag),
+                        label: Text('Reference ID:'),
+                        labelStyle: TextStyle(fontSize: 18),
+                        filled: true,
+                        fillColor: Theme.of(context).colorScheme.surface,
                       ),
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 16,
+                      ),
+                    ),
+
+                    DropdownButtonFormField<PaymentType>(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        prefixIcon: Icon(Icons.credit_card),
+                        label: Text('Tipo de Pagamento:'),
+                        labelStyle: TextStyle(fontSize: 18),
+                        filled: true,
+                        fillColor: Theme.of(context).colorScheme.surface,
+                      ),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 16,
+                      ),
+
+                      items: PaymentType.values
+                          .where((type) => type != PaymentType.unknown)
+                          .map((type) {
+                            return DropdownMenuItem(
+                              value: type,
+                              child: Text(type.description),
+                            );
+                          })
+                          .toList(),
+                      onChanged: (value) =>
+                          setState(() => _selectedType = value),
+                    ),
+
+                    TextField(
+                      controller: _amountController,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        prefixIcon: Icon(Icons.attach_money),
+                        label: Text('Valor:'),
+                        labelStyle: TextStyle(fontSize: 18),
+                        filled: true,
+                        fillColor: Theme.of(context).colorScheme.surface,
+                      ),
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            Card(
+              color: Theme.of(context).colorScheme.surface,
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.appPrimaryColor,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(vertical: 14),
+                          minimumSize: Size.fromHeight(60),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: isLoading ? null : _submit,
+                        child: isLoading
+                            ? CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              )
+                            : Text(
+                                'Enviar Simulação de Pagamento',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
