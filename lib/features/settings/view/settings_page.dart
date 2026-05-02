@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:payment_launcher/core/constants/app_colors.dart';
 import 'package:payment_launcher/core/constants/routes.dart';
-import 'package:payment_launcher/features/settings/service/settings_service.dart';
+import 'package:payment_launcher/features/settings/viewmodel/settings_view_model.dart';
 import 'package:payment_launcher/shared/widgets/nav_bar.dart';
 
 class SettingsPage extends StatefulWidget {
-  final SettingsService settingsService;
-  const SettingsPage({super.key, required this.settingsService});
+  final SettingsViewModel viewModel;
+  const SettingsPage({super.key, required this.viewModel});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -17,18 +17,22 @@ class _SettingsPageState extends State<SettingsPage> {
   late TextEditingController _urlController;
   late TextEditingController _usernameController;
   late TextEditingController _passwordController;
-  late final SettingsService _settings;
+  late final SettingsViewModel _settings;
 
   bool isObscure = true;
 
   @override
   void initState() {
     super.initState();
-    _settings = widget.settingsService;
+    _settings = widget.viewModel;
 
-    _urlController = TextEditingController(text: _settings.baseUrl);
-    _usernameController = TextEditingController(text: _settings.username);
-    _passwordController = TextEditingController(text: _settings.password);
+    _urlController = TextEditingController(text: _settings.getInitialUrl());
+    _usernameController = TextEditingController(
+      text: _settings.getInitialUsername(),
+    );
+    _passwordController = TextEditingController(
+      text: _settings.getInitialPassword(),
+    );
   }
 
   @override
@@ -59,35 +63,117 @@ class _SettingsPageState extends State<SettingsPage> {
         );
         return;
       }
+    }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Configurações salvas com sucesso!',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white),
+    final user = _usernameController.text.isEmpty
+        ? 'admin'
+        : _usernameController.text;
+    final pass = _passwordController.text.isEmpty
+        ? '1234'
+        : _passwordController.text;
+
+    try {
+      await _settings.status(_urlController.text, user, pass);
+      await _settings.save(_urlController.text, user, pass);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Configurações salvas com sucesso!',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            margin: EdgeInsets.all(16),
+            duration: Duration(seconds: 1),
           ),
-          backgroundColor: Colors.green,
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.all(16),
-          duration: Duration(seconds: 1),
-        ),
-      );
+        );
 
-      context.go(Routes.home);
+        context.go(Routes.home);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              e.toString().replaceAll('Exception: ', ''),
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.all(16),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
+
+  void _serverStatus() async {
+    if (mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+
+      if (_urlController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Informe o endereço do servidor',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.all(16),
+            duration: Duration(seconds: 1),
+          ),
+        );
+        return;
+      }
     }
 
-    if (_usernameController.text.isEmpty) {
-      _usernameController.text = 'admin';
-    }
+    final user = _usernameController.text.isEmpty
+        ? 'admin'
+        : _usernameController.text;
+    final pass = _passwordController.text.isEmpty
+        ? '1234'
+        : _passwordController.text;
 
-    if (_passwordController.text.isEmpty) {
-      _passwordController.text = '1234';
+    try {
+      await _settings.status(_urlController.text, user, pass);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Conexão bem-sucedida!',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            margin: EdgeInsets.all(16),
+            duration: Duration(seconds: 1),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              e.toString().replaceAll('Exception: ', ''),
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.all(16),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
     }
-
-    await _settings.setServerUrl(_urlController.text);
-    await _settings.setUsername(_usernameController.text);
-    await _settings.setPassword(_passwordController.text);
   }
 
   @override
@@ -120,6 +206,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
+                    spacing: 12,
                     children: [
                       TextFormField(
                         controller: _urlController,
@@ -139,21 +226,6 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              Card(
-                color: Theme.of(context).colorScheme.surface,
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadiusGeometry.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    spacing: 16,
-                    children: [
                       TextFormField(
                         controller: _usernameController,
                         style: TextStyle(
@@ -198,6 +270,25 @@ class _SettingsPageState extends State<SettingsPage> {
                             onPressed: () {
                               setState(() => isObscure = !isObscure);
                             },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () async => _serverStatus(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.appPrimaryColor,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            elevation: 2,
+                          ),
+                          child: Text(
+                            'Testar Conexão',
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),

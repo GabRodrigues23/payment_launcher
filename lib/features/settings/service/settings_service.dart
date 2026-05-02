@@ -1,3 +1,4 @@
+import 'package:dart_tefip/dart_tefip.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsService {
@@ -33,5 +34,23 @@ class SettingsService {
 
   Future<void> setPassword(String value) async {
     await _prefs.setString(_keyPassword, value);
+  }
+
+  Future<void> status(String url, String user, String pass) async {
+    TefIP.baseUrl = url;
+    TefIP.username = user;
+    TefIP.password = pass;
+
+    final tefIP = TefIP.instance;
+
+    try {
+      await tefIP.status.get();
+    } on TefIPRequestException catch (e) {
+      throw Exception('Erro na transação: ${e.message} (Cod: ${e.statusCode})');
+    } on TefIPUnexpectedException catch (e) {
+      throw Exception('Erro interno no pinpad: ${e.exception}');
+    } catch (e) {
+      throw Exception('Erro ao conectar com terminal TEF. Erro: $e');
+    }
   }
 }

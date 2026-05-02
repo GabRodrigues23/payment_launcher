@@ -4,7 +4,7 @@ import 'package:payment_launcher/core/constants/app_colors.dart';
 import 'package:payment_launcher/core/routes/app_router.dart';
 import 'package:payment_launcher/core/services/theme_service.dart';
 import 'package:payment_launcher/features/payment/viewmodel/payment_view_model.dart';
-import 'package:payment_launcher/features/settings/service/settings_service.dart';
+import 'package:payment_launcher/features/settings/viewmodel/settings_view_model.dart';
 
 class BuildApp extends StatelessWidget {
   const BuildApp({super.key});
@@ -12,12 +12,12 @@ class BuildApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeService = GetIt.I<ThemeService>();
-    final settingsService = GetIt.I<SettingsService>();
+    final settingsViewmodel = GetIt.I<SettingsViewModel>();
     final viewModel = GetIt.I<PaymentViewModel>();
 
     late final AppRouter router = AppRouter(
       themeService,
-      settingsService,
+      settingsViewmodel,
       viewModel,
     );
 

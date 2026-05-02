@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:payment_launcher/core/constants/app_colors.dart';
+import 'package:payment_launcher/core/constants/routes.dart';
 import 'package:payment_launcher/core/services/theme_service.dart';
 import 'package:payment_launcher/setup/setup_get_it_injector.dart';
 
@@ -85,7 +87,9 @@ class SideMenu extends StatelessWidget {
                 color: mode == ThemeMode.light
                     ? Color(0xFF000000)
                     : Color(0xFFFFFFFF),
-                onTap: () {},
+                onTap: () {
+                  context.go(Routes.settings);
+                },
               ),
 
               const Spacer(),

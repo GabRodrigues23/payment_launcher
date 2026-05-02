@@ -1,5 +1,4 @@
 import 'package:dart_tefip/dart_tefip.dart';
-import 'package:flutter/material.dart';
 import 'package:payment_launcher/features/payment/interface/payment_repository_interface.dart';
 import 'package:payment_launcher/features/payment/model/payment_model.dart';
 import 'package:payment_launcher/shared/enum/payment_type.dart';
@@ -24,10 +23,6 @@ class PaymentViewModel {
 
     final TransactionResponseModel response = await repository.postTransaction(
       model,
-    );
-
-    debugPrint(
-      "Retorno TEFIP -> cAut: ${response.cAut} | txid: ${response.txid} | msg: ${response.message}",
     );
 
     final bool pixApproved =

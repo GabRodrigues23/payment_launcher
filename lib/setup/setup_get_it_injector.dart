@@ -4,7 +4,10 @@ import 'package:payment_launcher/features/payment/interface/payment_repository_i
 import 'package:payment_launcher/features/payment/repository/payment_repository.dart';
 import 'package:payment_launcher/features/payment/service/payment_service.dart';
 import 'package:payment_launcher/features/payment/viewmodel/payment_view_model.dart';
+import 'package:payment_launcher/features/settings/interface/settings_repository_interface.dart';
+import 'package:payment_launcher/features/settings/repository/settings_repository.dart';
 import 'package:payment_launcher/features/settings/service/settings_service.dart';
+import 'package:payment_launcher/features/settings/viewmodel/settings_view_model.dart';
 
 final getIt = GetIt.instance;
 
@@ -15,6 +18,13 @@ void setupGetItInjector() {
 
   getIt.registerLazySingleton<SettingsService>(() => SettingsService());
 
+  getIt.registerLazySingleton<SettingsRepositoryInterface>(
+    () => SettingsRepository(getIt<SettingsService>()),
+  );
+
+  getIt.registerLazySingleton<SettingsViewModel>(
+    () => SettingsViewModel(getIt<SettingsRepositoryInterface>()),
+  );
   getIt.registerLazySingleton<PaymentService>(
     () => PaymentService(getIt<SettingsService>()),
   );
