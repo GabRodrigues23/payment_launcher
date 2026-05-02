@@ -5,6 +5,7 @@ import 'package:payment_launcher/core/constants/app_colors.dart';
 import 'package:payment_launcher/core/constants/routes.dart';
 import 'package:payment_launcher/core/services/theme_service.dart';
 import 'package:payment_launcher/shared/widgets/nav_bar.dart';
+import 'package:payment_launcher/shared/widgets/side_menu.dart';
 
 class HomePage extends StatelessWidget {
   final ThemeService themeService;
@@ -14,6 +15,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const NavBar(hasBack: false),
+      drawer: SideMenu(),
 
       body: Center(
         child: Padding(
